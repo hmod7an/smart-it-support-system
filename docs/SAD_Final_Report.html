@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WSiT – SAD Version 2 – Final Report</title>
+<style>
+  @page { size: A4; margin: 2.2cm 2cm 2.5cm 2.5cm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Calibri', 'Segoe UI', Arial, sans-serif; font-size: 11pt; line-height: 1.65; color: #2d3748; background: #fff; }
+
+  /* ── Cover ── */
+  .cover { page-break-after: always; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 26cm; text-align: center; background: #16213e; color: #fff; padding: 3cm 2cm; }
+  .cover .logo { font-size: 13pt; color: #4299e1; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.2cm; }
+  .cover h1 { font-size: 28pt; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 0.4cm; }
+  .cover .subtitle { font-size: 14pt; color: #4299e1; margin-bottom: 1.8cm; }
+  .cover .divider { width: 8cm; height: 3px; background: #4299e1; margin: 0.8cm auto; }
+  .cover .meta-table { border-collapse: collapse; margin: 1cm auto 0; width: 14cm; }
+  .cover .meta-table td { padding: 0.3cm 0.5cm; border: 1px solid rgba(255,255,255,0.15); font-size: 11pt; text-align: left; }
+  .cover .meta-table td:first-child { font-weight: 600; color: #4299e1; width: 5cm; background: rgba(0,0,0,0.15); }
+  .cover .meta-table td:last-child { color: #e2e8f0; }
+  .cover .team-box { margin-top: 1.5cm; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6cm 1.2cm; width: 14cm; }
+  .cover .team-box h3 { color: #4299e1; font-size: 10pt; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.4cm; }
+  .cover .team-box p { color: #e2e8f0; font-size: 12pt; }
+
+  /* ── Page breaks ── */
+  .section { page-break-before: always; padding-top: 0.5cm; }
+
+  /* ── Headings ── */
+  h1.doc { font-size: 20pt; color: #16213e; border-bottom: 3px solid #4299e1; padding-bottom: 0.2cm; margin: 0.6cm 0 0.5cm; }
+  h2 { font-size: 15pt; color: #16213e; border-left: 5px solid #4299e1; padding-left: 0.4cm; margin: 0.8cm 0 0.4cm; }
+  h3 { font-size: 12pt; color: #2b6cb0; margin: 0.6cm 0 0.25cm; font-weight: 700; }
+  h4 { font-size: 11pt; color: #4a5568; margin: 0.4cm 0 0.2cm; font-weight: 700; font-style: italic; }
+
+  /* ── TOC ── */
+  .toc { page-break-after: always; }
+  .toc ul { list-style: none; padding: 0; margin-top: 0.5cm; }
+  .toc > ul > li { margin: 0.3cm 0; font-size: 12pt; }
+  .toc > ul > li > ul { padding-left: 1cm; margin-top: 0.1cm; }
+  .toc > ul > li > ul > li { margin: 0.1cm 0; font-size: 10.5pt; color: #4a5568; }
+  .toc .page-ref { float: right; color: #4299e1; font-weight: 600; }
+  .toc-title { color: #2b6cb0; font-weight: 700; }
+
+  /* ── Body ── */
+  p { margin: 0.3cm 0; }
+  ul, ol { margin: 0.2cm 0 0.3cm 1.2cm; }
+  li { margin: 0.15cm 0; }
+
+  /* ── Tables ── */
+  table { border-collapse: collapse; width: 100%; margin: 0.4cm 0; font-size: 10.5pt; }
+  th { background: #16213e; color: #fff; padding: 0.3cm 0.4cm; text-align: left; font-weight: 600; }
+  td { padding: 0.25cm 0.4cm; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f7fafc; }
+  tr:hover td { background: #ebf8ff; }
+  td:first-child { font-weight: 600; color: #4a5568; }
+
+  /* ── Status badges ── */
+  .badge { display: inline-block; padding: 0.05cm 0.3cm; border-radius: 20px; font-size: 9.5pt; font-weight: 700; }
+  .done { background: #f0fff4; color: #276749; }
+  .partial { background: #fffaf0; color: #c05621; }
+  .na { background: #f7fafc; color: #718096; }
+
+  /* ── Code blocks ── */
+  pre { background: #1a1a2e; color: #e2e8f0; border-radius: 6px; padding: 0.5cm 0.6cm; font-family: 'Consolas', 'Courier New', monospace; font-size: 9pt; overflow-x: auto; margin: 0.4cm 0; line-height: 1.6; page-break-inside: avoid; }
+  code { background: #edf2f7; padding: 1px 5px; border-radius: 3px; font-family: 'Consolas', monospace; font-size: 9.5pt; color: #c53030; }
+
+  /* ── Info boxes ── */
+  .info-box { background: #ebf8ff; border-left: 4px solid #4299e1; padding: 0.4cm 0.6cm; margin: 0.4cm 0; border-radius: 0 6px 6px 0; font-size: 10.5pt; }
+  .note-box  { background: #fffaf0; border-left: 4px solid #ed8936; padding: 0.4cm 0.6cm; margin: 0.4cm 0; border-radius: 0 6px 6px 0; font-size: 10.5pt; }
+  .warn-box  { background: #fff5f5; border-left: 4px solid #fc8181; padding: 0.4cm 0.6cm; margin: 0.4cm 0; border-radius: 0 6px 6px 0; font-size: 10.5pt; }
+
+  /* ── Diagram placeholder ── */
+  .diagram-frame { border: 2px dashed #cbd5e0; background: #f7fafc; border-radius: 8px; padding: 0.5cm; margin: 0.5cm 0; page-break-inside: avoid; }
+  .diagram-frame img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  .diagram-caption { text-align: center; font-size: 9.5pt; color: #718096; font-style: italic; margin-top: 0.3cm; }
+
+  /* ── Layer cards ── */
+  .layer { border-left: 5px solid; padding: 0.35cm 0.6cm; margin: 0.3cm 0; page-break-inside: avoid; }
+  .layer-pres   { border-color: #4299e1; background: #ebf8ff; }
+  .layer-ctrl   { border-color: #38a169; background: #f0fff4; }
+  .layer-svc    { border-color: #ed8936; background: #fffaf0; }
+  .layer-data   { border-color: #e94560; background: #fff5f5; }
+  .layer h4     { margin: 0 0 0.2cm; font-size: 11pt; font-style: normal; }
+  .layer ul     { margin: 0.1cm 0 0 0.8cm; }
+
+  /* ── Contributor cards ── */
+  .contrib { background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.5cm 0.6cm; margin: 0.4cm 0; page-break-inside: avoid; }
+  .contrib h3 { margin: 0 0 0.1cm; color: #16213e; border: none; font-size: 13pt; }
+  .contrib .role-tag { display: inline-block; background: #4299e1; color: #fff; font-size: 9pt; padding: 2px 8px; border-radius: 12px; margin-bottom: 0.3cm; font-weight: 600; }
+
+  /* ── Change log ── */
+  .changelog { background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.4cm 0.6cm; margin: 0.5cm 0; }
+
+  /* ── Print ── */
+  @media print {
+    .cover { min-height: auto; height: 26.7cm; }
+    pre { font-size: 8pt; }
+    body { font-size: 10.5pt; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     COVER PAGE
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="logo">WSiT – World Systems for Information Technology</div>
+  <h1>Smart IT Service Request<br>&amp; Support Ticket System</h1>
+  <div class="subtitle">Software Architecture Document — Version 2.0</div>
+  <div class="divider"></div>
+
+  <table class="meta-table">
+    <tr><td>Document Version</td><td>2.0 (Phase 2 — Final)</td></tr>
+    <tr><td>Previous Version</td><td>1.0 (Phase 1 — Submitted 04 May 2026)</td></tr>
+    <tr><td>Phase 2 Deadline</td><td>24 May 2026</td></tr>
+    <tr><td>Status</td><td>Final — Ready for Submission</td></tr>
+    <tr><td>Architecture Style</td><td>Layered REST API Architecture</td></tr>
+    <tr><td>Document Format</td><td>4+1 Architectural Model (Kruchten, 1995)</td></tr>
+    <tr><td>Tech Stack</td><td>React 18 · FastAPI · SQLite · JWT · Docker</td></tr>
+  </table>
+
+  <div class="team-box">
+    <h3>Project Team</h3>
+    <p>Zekeriya &nbsp;·&nbsp; Hussein &nbsp;·&nbsp; Hamza &nbsp;·&nbsp; Elsa &nbsp;·&nbsp; Leen</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     CHANGE LOG
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="changelog">
+  <h3>Document Change Log</h3>
+  <table>
+    <tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+    <tr><td>1.0</td><td>2026-05-04</td><td>Initial MVP — mock token auth, SHA-256 hashing, basic ticket CRUD, Use Case / Logical / Process Views</td></tr>
+    <tr><td>2.0</td><td>2026-05-19</td><td>JWT authentication, bcrypt hashing, Technician role (UC-10, UC-11), search/filter API, .env config, Docker support, Development View, Deployment View, production deployment diagram</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     TABLE OF CONTENTS
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="toc section">
+  <h1 class="doc">Table of Contents</h1>
+  <ul>
+    <li><span class="toc-title">1. Introduction</span>
+      <ul>
+        <li>1.1 Purpose</li>
+        <li>1.2 Scope</li>
+        <li>1.3 Target System</li>
+        <li>1.4 Architecture Style</li>
+      </ul>
+    </li>
+    <li><span class="toc-title">2. System Selection</span>
+      <ul>
+        <li>2.1 System Name & Description</li>
+        <li>2.2 System Users</li>
+        <li>2.3 Service Functionalities</li>
+      </ul>
+    </li>
+    <li><span class="toc-title">3. 4+1 Architectural Model</span>
+      <ul>
+        <li>3.1 Use Case View</li>
+        <li>3.2 Logical View</li>
+        <li>3.3 Process View</li>
+        <li>3.4 Development View</li>
+        <li>3.5 Deployment View (Physical)</li>
+        <li>3.6 Scenarios (+1 View)</li>
+      </ul>
+    </li>
+    <li><span class="toc-title">4. Implementation Summary</span></li>
+    <li><span class="toc-title">5. Team Member Contributions</span></li>
+    <li><span class="toc-title">6. Conclusion</span></li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 1: INTRODUCTION
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h1 class="doc">1. Introduction</h1>
+
+  <h2>1.1 Purpose</h2>
+  <p>This Software Architecture Document (SAD) describes the complete architectural design of the <strong>Smart IT Service Request and Support Ticket System</strong> for WSiT (World Systems for Information Technology). It serves as the primary technical reference for the development team, academic evaluators, and future maintainers of the system.</p>
+  <p>Version 2.0 extends the Phase 1 MVP baseline by introducing production-ready security, a Technician role, search capabilities, deployment configuration, and formal Development and Deployment Views.</p>
+
+  <h2>1.2 Scope</h2>
+  <p>This document covers both Phase 1 and Phase 2 of the system:</p>
+  <ul>
+    <li><strong>Phase 1:</strong> Customer self-service ticket submission, role-based access (Customer/Admin), ticket lifecycle management, React SPA frontend, FastAPI backend, SQLite database.</li>
+    <li><strong>Phase 2:</strong> JWT-based authentication, bcrypt password hashing, Technician role with dedicated dashboard, ticket search and filter by status/priority/keyword, environment-based configuration, Docker containerisation, production deployment architecture.</li>
+  </ul>
+
+  <h2>1.3 Target System</h2>
+  <p>The system is deployed as a web application accessible via any modern browser. The backend exposes a JSON/HTTP REST API consumed exclusively by the React frontend. In production, Nginx acts as a reverse proxy routing traffic to either the frontend static files or the FastAPI backend.</p>
+
+  <h2>1.4 Architecture Style: Layered REST API</h2>
+  <p>The system implements a <strong>four-layer architecture</strong> with strict separation of concerns:</p>
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Responsibility</th></tr>
+    <tr><td>Presentation</td><td>React 18, Vite 5</td><td>Renders UI, manages local state, calls API</td></tr>
+    <tr><td>Controller (API)</td><td>FastAPI route handlers</td><td>Validates requests, enforces auth, delegates to services</td></tr>
+    <tr><td>Business Logic</td><td>Service modules (Python)</td><td>Enforces rules, orchestrates data operations</td></tr>
+    <tr><td>Data Access</td><td>SQLAlchemy 2.0 ORM</td><td>Abstracts SQLite queries behind repository functions</td></tr>
+  </table>
+  <p>The document follows the <strong>4+1 Architectural Model</strong> (Kruchten, 1995): Use Case, Logical, Process, Development, and Physical (Deployment) Views, plus a Scenarios (+1) View.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 2: SYSTEM SELECTION
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h1 class="doc">2. System Selection</h1>
+
+  <h2>2.1 System Name &amp; Description</h2>
+  <p><strong>Smart IT Service Request and Support Ticket System</strong></p>
+  <p>WSiT provides managed technology services across multiple verticals. Customers previously reported issues via email and phone, resulting in untracked requests, missed SLAs, and poor visibility. This system replaces the informal process with a structured, digital ticketing workflow accessible 24/7 through a web browser.</p>
+
+  <h2>2.2 System Users (Actors)</h2>
+  <table>
+    <tr><th>Actor</th><th>Role</th><th>Key Capabilities</th></tr>
+    <tr><td>Customer</td><td>Client / End-User</td><td>Register, login, submit service requests, track own tickets, filter by status/priority</td></tr>
+    <tr><td>Technician</td><td>Field Technician (Phase 2)</td><td>Register as technician, view only assigned tickets, mark tickets resolved or closed</td></tr>
+    <tr><td>Administrator</td><td>WSiT Staff</td><td>View all tickets, assign technicians (from dropdown), update any status, search/filter</td></tr>
+  </table>
+
+  <h2>2.3 Main Service Functionalities</h2>
+  <table>
+    <tr><th>Service Type</th><th>Description</th></tr>
+    <tr><td>CCTV</td><td>Installation, maintenance, and troubleshooting of surveillance systems</td></tr>
+    <tr><td>Networking</td><td>LAN/WAN configuration, Wi-Fi setup, connectivity issues</td></tr>
+    <tr><td>Maintenance</td><td>General hardware and physical IT asset repair</td></tr>
+    <tr><td>Smart Home</td><td>IoT device installation and integration</td></tr>
+    <tr><td>Access Control</td><td>Biometric and card-based entry system support</td></tr>
+    <tr><td>Tech Support</td><td>General software, OS, and device troubleshooting</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 3: 4+1 ARCHITECTURAL MODEL
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h1 class="doc">3. 4+1 Architectural Model</h1>
+
+  <!-- 3.1 USE CASE VIEW -->
+  <h2>3.1 Use Case View</h2>
+
+  <h3>3.1.1 Use Cases</h3>
+  <table>
+    <tr><th>ID</th><th>Use Case</th><th>Actor(s)</th><th>Phase</th><th>Description</th></tr>
+    <tr><td>UC-01</td><td>Register Account</td><td>Customer / Technician</td><td>1</td><td>Create a new account with role selection (Customer or Technician)</td></tr>
+    <tr><td>UC-02</td><td>Login</td><td>All</td><td>1</td><td>Authenticate and receive a signed JWT; redirected to role-appropriate dashboard</td></tr>
+    <tr><td>UC-03</td><td>Submit Service Request</td><td>Customer</td><td>1</td><td>Create a new ticket with service type, priority, location, and description</td></tr>
+    <tr><td>UC-04</td><td>View My Tickets</td><td>Customer</td><td>1</td><td>List own submitted tickets with current status and assigned technician</td></tr>
+    <tr><td>UC-05</td><td>View Ticket Details</td><td>All</td><td>1</td><td>View full information on a single ticket (owner or admin/technician)</td></tr>
+    <tr><td>UC-06</td><td>View All Tickets</td><td>Admin</td><td>1</td><td>See all tickets across all customers in a unified management table</td></tr>
+    <tr><td>UC-07</td><td>Assign Technician</td><td>Admin</td><td>1</td><td>Assign a registered technician (from dropdown) to a ticket; sets status → in_progress</td></tr>
+    <tr><td>UC-08</td><td>Update Ticket Status</td><td>Admin</td><td>1</td><td>Change ticket status through the lifecycle: open → in_progress → resolved → closed</td></tr>
+    <tr><td>UC-09</td><td>Search &amp; Filter Tickets</td><td>Customer / Admin</td><td>2</td><td>Filter tickets by status, priority, or keyword (title/description/location)</td></tr>
+    <tr><td>UC-10</td><td>View Assigned Tickets</td><td>Technician</td><td>2</td><td>View only the tickets assigned to the logged-in technician, with filter support</td></tr>
+    <tr><td>UC-11</td><td>Update Ticket Status (Tech)</td><td>Technician</td><td>2</td><td>Mark assigned tickets as Resolved or Closed; cannot access unassigned tickets</td></tr>
+  </table>
+
+  <h3>3.1.2 Use Case Diagram</h3>
+  <div class="diagram-frame">
+    <img src="Use Case Diagram.png" alt="Use Case Diagram (Phase 1 — UC-01 to UC-08)" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <div style="display:none; padding:1cm; text-align:center; color:#718096;">
+      <p><em>Diagram image not found. Render the PlantUML code below at plantuml.com</em></p>
+    </div>
+    <p class="diagram-caption">Figure 3.1 — Use Case Diagram (Phase 1 base: UC-01 to UC-08)</p>
+  </div>
+
+  <div class="note-box">
+    <strong>Phase 2 Extension:</strong> UC-09 adds Search &amp; Filter for Customer and Admin. UC-10 and UC-11 introduce the Technician actor. The updated PlantUML source is maintained in <code>docs/SAD_V2.md</code>.
+  </div>
+
+  <h3>3.1.3 Updated Use Case Diagram (Phase 2 — PlantUML)</h3>
+  <pre>@startuml
+left to right direction
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam backgroundColor #FAFAFA
+
+actor Customer      as C
+actor Technician    as T
+actor Administrator as A
+
+rectangle "WSiT Smart IT Support System" {
+  usecase "UC-01 Register Account"        as UC01
+  usecase "UC-02 Login"                   as UC02
+  usecase "UC-03 Submit Service Request"  as UC03
+  usecase "UC-04 View My Tickets"         as UC04
+  usecase "UC-05 View Ticket Details"     as UC05
+  usecase "UC-06 View All Tickets"        as UC06
+  usecase "UC-07 Assign Technician"       as UC07
+  usecase "UC-08 Update Ticket Status"    as UC08
+  usecase "UC-09 Search &amp; Filter Tickets" as UC09
+  usecase "UC-10 View Assigned Tickets"   as UC10
+  usecase "UC-11 Update Status (Tech)"    as UC11
+}
+
+C --> UC01 ; C --> UC02 ; C --> UC03
+C --> UC04 ; C --> UC05 ; C --> UC09
+T --> UC02 ; T --> UC05 ; T --> UC10 ; T --> UC11
+A --> UC02 ; A --> UC05 ; A --> UC06
+A --> UC07 ; A --> UC08 ; A --> UC09
+@enduml</pre>
+</div>
+
+  <!-- 3.2 LOGICAL VIEW -->
+  <h2>3.2 Logical View</h2>
+
+  <h3>3.2.1 Layer Breakdown</h3>
+
+  <div class="layer layer-pres">
+    <h4>Presentation Layer — React SPA</h4>
+    <ul>
+      <li><code>LoginPage.jsx</code> — Login/Register tabs with Customer/Technician role selector, loading/error states</li>
+      <li><code>CustomerDashboard.jsx</code> — Ticket submission form, status/priority filter bar, ticket list</li>
+      <li><code>AdminDashboard.jsx</code> — Search input, status/priority filters, technician assignment dropdown, inline status controls</li>
+      <li><code>TechnicianDashboard.jsx</code> — Assigned ticket list, resolve/close action buttons, filter bar (Phase 2)</li>
+      <li><code>TicketDetails.jsx</code> — Read-only single ticket view with all metadata</li>
+      <li><code>Navbar.jsx</code>, <code>StatusBadge.jsx</code> — Reusable UI components</li>
+      <li><code>api/client.js</code> — Centralised Axios instance with JWT Bearer token interceptor and <code>VITE_API_URL</code> configuration</li>
+    </ul>
+  </div>
+
+  <div class="layer layer-ctrl">
+    <h4>Controller Layer — FastAPI Routes</h4>
+    <ul>
+      <li><code>routes/auth.py</code> — <code>POST /auth/login</code> (issues JWT), <code>POST /customers/register</code> (Customer/Technician), <code>GET /technicians</code> (admin dropdown)</li>
+      <li><code>routes/tickets.py</code> — All ticket endpoints with JWT dependency; optional <code>?status</code>, <code>?priority</code>, <code>?search</code> query params on list endpoints; <code>PUT /tickets/{id}/resolve</code> for technicians</li>
+    </ul>
+  </div>
+
+  <div class="layer layer-svc">
+    <h4>Business Logic Layer — Services</h4>
+    <ul>
+      <li><code>services/auth_service.py</code> — bcrypt hashing/verification, JWT creation/decoding, admin seeding, technician list retrieval</li>
+      <li><code>services/ticket_service.py</code> — Ticket CRUD, <code>_apply_filters()</code> helper for keyword/status/priority queries, <code>get_tickets_by_technician()</code></li>
+    </ul>
+  </div>
+
+  <div class="layer layer-data">
+    <h4>Data Access Layer — SQLAlchemy + Config</h4>
+    <ul>
+      <li><code>models/models.py</code> — <code>User</code> ORM (roles: customer/technician/admin), <code>Ticket</code> ORM, <code>TicketStatus</code>, <code>TicketPriority</code>, <code>ServiceType</code> enums</li>
+      <li><code>schemas/schemas.py</code> — Pydantic request/response contracts for all endpoints</li>
+      <li><code>database/database.py</code> — SQLAlchemy engine, <code>SessionLocal</code>, <code>get_db</code> dependency; reads <code>DATABASE_URL</code> from config</li>
+      <li><code>core/config.py</code> — Loads <code>SECRET_KEY</code>, <code>ALGORITHM</code>, <code>ACCESS_TOKEN_EXPIRE_MINUTES</code>, <code>DATABASE_URL</code> from <code>.env</code> via python-dotenv (Phase 2)</li>
+    </ul>
+  </div>
+
+  <h3>3.2.2 Security Architecture (Phase 2)</h3>
+  <table>
+    <tr><th>Concern</th><th>Implementation</th></tr>
+    <tr><td>Password storage</td><td>bcrypt via passlib — each hash includes a unique salt; bcrypt==4.0.1 pinned for passlib 1.7.4 compatibility</td></tr>
+    <tr><td>Authentication tokens</td><td>HS256 JWT — signed with <code>SECRET_KEY</code>; payload contains user ID (<code>sub</code>), role, email, expiry</td></tr>
+    <tr><td>Token transport</td><td><code>Authorization: Bearer &lt;token&gt;</code> HTTP header — never in query strings</td></tr>
+    <tr><td>Token expiry</td><td>Configurable via <code>ACCESS_TOKEN_EXPIRE_MINUTES</code> (default: 1440 min / 24 h)</td></tr>
+    <tr><td>Role enforcement</td><td><code>require_admin</code> and ownership checks in route dependencies — raises HTTP 403 on violation</td></tr>
+    <tr><td>CORS</td><td>Restricted to <code>localhost:5173</code> and <code>localhost:3000</code></td></tr>
+    <tr><td>Secrets management</td><td>All secrets in <code>.env</code> — <code>.env.example</code> provided, <code>.env</code> excluded from version control</td></tr>
+  </table>
+
+  <h3>3.2.3 Component Diagram</h3>
+  <div class="diagram-frame">
+    <img src="Component Diagram.png" alt="Component Diagram" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <div style="display:none; padding:0.5cm; text-align:center; color:#718096;"><em>Diagram image not found. See PlantUML code in SAD_V2.md</em></div>
+    <p class="diagram-caption">Figure 3.2 — Component Diagram (Phase 1 base; Phase 2 adds TechnicianDashboard, core/config, /technicians, /tickets/assigned endpoints)</p>
+  </div>
+
+  <!-- 3.3 PROCESS VIEW -->
+  <h2>3.3 Process View</h2>
+
+  <h3>3.3.1 Key Workflows</h3>
+
+  <h4>JWT Login Flow (Phase 2)</h4>
+  <ol>
+    <li>User submits email + password to <code>POST /auth/login</code></li>
+    <li><code>auth_service.verify_password()</code> checks bcrypt hash stored in DB</li>
+    <li>On success, <code>auth_service.create_access_token()</code> generates a signed HS256 JWT</li>
+    <li>JWT payload: <code>{"sub": user_id, "email": ..., "role": ..., "exp": ...}</code></li>
+    <li>Frontend stores JWT in <code>localStorage</code>; Axios interceptor attaches it as <code>Authorization: Bearer &lt;token&gt;</code> on all subsequent requests</li>
+    <li>React Router redirects to <code>/dashboard</code>, <code>/technician</code>, or <code>/admin</code> based on role</li>
+  </ol>
+
+  <h4>Ticket Submission Flow (Customer)</h4>
+  <ol>
+    <li>Customer fills the service request form on <code>CustomerDashboard</code></li>
+    <li>Axios POSTs to <code>POST /tickets</code> with <code>Authorization: Bearer &lt;JWT&gt;</code></li>
+    <li><code>get_current_user()</code> dependency decodes JWT, retrieves user by <code>sub</code> (ID) from DB</li>
+    <li><code>ticket_service.create_ticket()</code> writes a new <code>Ticket</code> row (status = <code>open</code>)</li>
+    <li>Response returned; ticket appears in the customer's list</li>
+  </ol>
+
+  <h4>Technician Assignment &amp; Resolution Flow (Phase 2)</h4>
+  <ol>
+    <li>Admin opens dashboard → <code>GET /tickets</code> (all tickets) + <code>GET /technicians</code> (dropdown)</li>
+    <li>Admin selects technician from dropdown → <code>PUT /tickets/{id}/assign</code></li>
+    <li><code>ticket_service.assign_ticket()</code> → <code>assigned_technician = name</code>, <code>status = in_progress</code></li>
+    <li>Technician logs in → <code>GET /tickets/assigned</code> shows only their tickets</li>
+    <li>Technician clicks "Mark Resolved" → <code>PUT /tickets/{id}/resolve</code> with <code>status = resolved</code></li>
+    <li>Backend verifies <code>assigned_technician == current_user.full_name</code> before updating</li>
+    <li>Technician clicks "Mark Closed" → <code>status = closed</code></li>
+  </ol>
+
+  <h4>Search &amp; Filter Flow (Phase 2)</h4>
+  <ol>
+    <li>User selects filters (status, priority) or enters a keyword in the UI</li>
+    <li>Frontend calls <code>GET /tickets?status=open&amp;priority=high&amp;search=floor</code></li>
+    <li><code>ticket_service._apply_filters()</code> applies SQLAlchemy <code>WHERE</code> clauses and <code>ilike()</code> for keyword search</li>
+    <li>Filtered list returned and rendered in the table</li>
+  </ol>
+
+  <h3>3.3.2 Sequence Diagram — JWT Login</h3>
+  <div class="diagram-frame">
+    <div style="padding:0.5cm; text-align:center; color:#718096;"><em>See PlantUML code below — render at plantuml.com</em></div>
+    <p class="diagram-caption">Figure 3.3 — Sequence Diagram: JWT Login Flow</p>
+  </div>
+  <pre>@startuml
+skinparam backgroundColor #FAFAFA
+actor User
+participant "LoginPage (React)" as UI
+participant "api/client (Axios)" as AX
+participant "routes/auth (FastAPI)" as R
+participant "services/auth_service" as S
+database "SQLite DB" as DB
+
+User -> UI  : Enter email + password
+UI   -> AX  : POST /auth/login { email, password }
+AX   -> R   : HTTP POST /auth/login
+R    -> S   : get_user_by_email(email)
+S    -> DB  : SELECT * FROM users WHERE email = ?
+DB  --> S   : User row
+S   --> R   : user
+R    -> S   : verify_password(plain, hashed)
+S   --> R   : True
+R    -> S   : create_access_token(user)
+S   --> R   : signed JWT (HS256)
+R   --> AX  : 200 { token, user }
+AX  --> UI  : store in localStorage
+UI  --> User : redirect /dashboard | /technician | /admin
+@enduml</pre>
+
+  <h3>3.3.3 Sequence Diagram — Customer Submits a Ticket</h3>
+  <div class="diagram-frame">
+    <img src="Sequence Diagram.png" alt="Sequence Diagram" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <div style="display:none; padding:0.5cm; text-align:center; color:#718096;"><em>Diagram image not found. See SAD_V2.md</em></div>
+    <p class="diagram-caption">Figure 3.4 — Sequence Diagram: Customer Submits a Ticket</p>
+  </div>
+
+  <h3>3.3.4 Activity Diagram — Admin Ticket Management</h3>
+  <div class="diagram-frame">
+    <img src="Activity Diagram.png" alt="Activity Diagram" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <div style="display:none; padding:0.5cm; text-align:center; color:#718096;"><em>Diagram image not found. See SAD_V2.md</em></div>
+    <p class="diagram-caption">Figure 3.5 — Activity Diagram: Admin Ticket Management Workflow</p>
+  </div>
+
+  <!-- 3.4 DEVELOPMENT VIEW -->
+  <h2>3.4 Development View</h2>
+
+  <h3>3.4.1 Module Organisation</h3>
+  <pre>smart-it-support-system/
+├── backend/
+│   ├── main.py                     # FastAPI app v2.0.0, CORS, lifespan, admin seed
+│   ├── requirements.txt            # + python-jose, passlib[bcrypt], python-dotenv
+│   ├── Dockerfile                  # python:3.11-slim image
+│   ├── .env / .env.example         # Secrets: SECRET_KEY, ALGORITHM, DATABASE_URL
+│   └── app/
+│       ├── core/config.py          # Loads all settings from .env via python-dotenv
+│       ├── database/database.py    # SQLAlchemy engine (reads DATABASE_URL from config)
+│       ├── models/models.py        # User (3 roles), Ticket ORM + Enums
+│       ├── schemas/schemas.py      # Pydantic request/response contracts
+│       ├── routes/
+│       │   ├── auth.py             # /auth/login, /customers/register, /technicians
+│       │   └── tickets.py          # All ticket endpoints + JWT deps + filter params
+│       └── services/
+│           ├── auth_service.py     # bcrypt, JWT create/decode, technician list
+│           └── ticket_service.py   # CRUD, _apply_filters(), get_tickets_by_technician()
+│
+├── frontend/
+│   ├── Dockerfile                  # Multi-stage: node:18-alpine → nginx:alpine
+│   ├── nginx.conf                  # SPA fallback for React Router
+│   ├── .env / .env.example         # VITE_API_URL=http://localhost:8000
+│   └── src/
+│       ├── App.jsx                 # React Router + RequireAuth + 3-role redirect logic
+│       ├── api/client.js           # Axios + Bearer token + VITE_API_URL
+│       ├── components/
+│       │   ├── Navbar.jsx          # Top nav with user info and logout
+│       │   └── StatusBadge.jsx     # Coloured badge for status/priority values
+│       └── pages/
+│           ├── LoginPage.jsx       # Login/Register + Customer/Technician selector
+│           ├── CustomerDashboard.jsx  # Submit form + status/priority filter
+│           ├── AdminDashboard.jsx     # Search/filter bar + technician dropdown
+│           ├── TechnicianDashboard.jsx # Assigned tickets + resolve/close actions
+│           └── TicketDetails.jsx      # Read-only single ticket detail view
+│
+├── docs/
+│   ├── SAD_V1.md                   # Phase 1 architecture document (submitted)
+│   ├── SAD_V2.md                   # Phase 2 architecture document (PlantUML source)
+│   ├── SAD_Final_Report.html       # This document (print to PDF)
+│   └── WSiT_Presentation.pptx     # Phase 2 presentation
+├── docker-compose.yml              # Runs backend + frontend together
+└── README.md                       # Complete setup instructions for both phases</pre>
+
+  <h3>3.4.2 Dependency Summary</h3>
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Version</th><th>Notes</th></tr>
+    <tr><td>Frontend Framework</td><td>React</td><td>18.3</td><td></td></tr>
+    <tr><td>Frontend Build</td><td>Vite</td><td>5.2</td><td>Reads <code>VITE_*</code> env at build time</td></tr>
+    <tr><td>HTTP Client</td><td>Axios</td><td>1.7</td><td>JWT injected via request interceptor</td></tr>
+    <tr><td>Frontend Routing</td><td>React Router</td><td>6.23</td><td><code>RequireAuth</code> guards per role</td></tr>
+    <tr><td>Backend Framework</td><td>FastAPI</td><td>0.104</td><td></td></tr>
+    <tr><td>ASGI Server</td><td>Uvicorn</td><td>0.24</td><td></td></tr>
+    <tr><td>ORM</td><td>SQLAlchemy</td><td>2.0</td><td></td></tr>
+    <tr><td>Validation</td><td>Pydantic</td><td>2.7</td><td></td></tr>
+    <tr><td>JWT</td><td>python-jose</td><td>3.3</td><td>HS256 signing — Phase 2</td></tr>
+    <tr><td>Password Hashing</td><td>passlib[bcrypt]</td><td>1.7.4</td><td>bcrypt pinned to 4.0.1 — Phase 2</td></tr>
+    <tr><td>Env Config</td><td>python-dotenv</td><td>1.0</td><td>.env file loading — Phase 2</td></tr>
+    <tr><td>Database</td><td>SQLite</td><td>bundled</td><td>Single-file, no separate server</td></tr>
+    <tr><td>Container Runtime</td><td>Docker / Compose</td><td>—</td><td>Optional production deployment — Phase 2</td></tr>
+  </table>
+
+  <!-- 3.5 DEPLOYMENT VIEW -->
+  <h2>3.5 Deployment View (Physical View)</h2>
+
+  <h3>3.5.1 Development Deployment (Local)</h3>
+  <p>All services run on a single developer machine. The browser communicates with the Vite dev server (port 5173) which serves the React SPA. All API calls are directed to FastAPI/Uvicorn on port 8000. FastAPI reads and writes to a SQLite file on the local filesystem. Environment variables are loaded from <code>backend/.env</code>.</p>
+
+  <h3>3.5.2 Development Deployment Diagram</h3>
+  <pre>@startuml
+skinparam backgroundColor #FAFAFA
+skinparam nodeStyle rectangle
+
+node "Developer Workstation" {
+  node "Browser (Chrome / Firefox)" as Browser
+  node "Vite Dev Server :5173" as Vite {
+    artifact "React SPA (JS/HTML/CSS)" as ReactApp
+  }
+  node "Uvicorn ASGI Server :8000" as Uvicorn {
+    artifact "FastAPI Application" as FastAPI
+  }
+  database "SQLite File wsit_support.db" as SQLite
+  file ".env (SECRET_KEY, DATABASE_URL)" as EnvFile
+}
+
+Browser  --> Vite    : HTTP GET / (serves index.html + JS)
+Browser  --> Uvicorn : HTTP/JSON REST + Authorization: Bearer JWT
+FastAPI  --> SQLite  : SQLAlchemy ORM queries
+FastAPI  --> EnvFile : python-dotenv reads on startup
+@enduml</pre>
+
+  <h3>3.5.3 Production Deployment (Docker + Nginx)</h3>
+  <p>In production, the system is containerised with Docker. The React application is pre-built into static files and served by Nginx. FastAPI runs behind Uvicorn inside a Python container. An Nginx reverse proxy acts as the single entry point: static assets are served directly while API requests (<code>/api/*</code>) are proxied to the FastAPI container.</p>
+
+  <table>
+    <tr><th>Component</th><th>Container</th><th>Port</th><th>Responsibility</th></tr>
+    <tr><td>Nginx reverse proxy</td><td>nginx:alpine</td><td>80 (external)</td><td>Routes: <code>/</code> → frontend, <code>/api/*</code> → backend</td></tr>
+    <tr><td>React frontend</td><td>node:18 → nginx:alpine</td><td>80 (internal)</td><td>Serves pre-built static SPA files</td></tr>
+    <tr><td>FastAPI backend</td><td>python:3.11-slim</td><td>8000 (internal)</td><td>Handles all REST API requests</td></tr>
+    <tr><td>SQLite</td><td>Docker volume</td><td>—</td><td>Persists ticket and user data</td></tr>
+  </table>
+
+  <h3>3.5.4 Production Deployment Diagram</h3>
+  <pre>@startuml
+skinparam backgroundColor #FAFAFA
+skinparam nodeStyle rectangle
+
+node "Production Server / VPS" {
+  node "Nginx Reverse Proxy :80 (external)" as NginxProxy {
+    artifact "Route /      → frontend\nRoute /api/* → backend" as Routes
+  }
+  node "Frontend Container nginx:alpine :80" as FE {
+    artifact "React Build (static files)" as StaticFiles
+  }
+  node "Backend Container python:3.11-slim :8000" as BE {
+    artifact "FastAPI + Uvicorn" as FastAPIApp
+  }
+  database "Docker Volume wsit_support.db" as DBVol
+  file ".env (SECRET_KEY, DATABASE_URL)" as ProdEnv
+}
+
+NginxProxy --> FE     : proxy_pass /
+NginxProxy --> BE     : proxy_pass /api/* (strip prefix)
+BE         --> DBVol  : SQLAlchemy ORM
+BE         --> ProdEnv : reads on startup
+@enduml</pre>
+
+  <h3>3.5.5 Nginx Reverse Proxy Configuration (Reference)</h3>
+  <pre>server {
+    listen 80;
+    server_name _;
+
+    location / {
+        proxy_pass         http://frontend:80;
+        proxy_set_header   Host $host;
+    }
+
+    location /api/ {
+        rewrite ^/api/(.*) /$1 break;
+        proxy_pass         http://backend:8000;
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+    }
+}</pre>
+
+  <!-- 3.6 SCENARIOS -->
+  <h2>3.6 Scenarios (+1 View)</h2>
+
+  <h4>Scenario 1 — Customer Logs In and Submits a CCTV Request</h4>
+  <ol>
+    <li>Customer registers at <code>/login</code> with role "Customer" → account created with bcrypt hash</li>
+    <li>Customer logs in → <code>POST /auth/login</code> → JWT issued → navigated to <code>/dashboard</code></li>
+    <li>Clicks "+ New Request", selects CCTV, priority High, fills title/location/description</li>
+    <li><code>POST /tickets</code> → JWT decoded → <code>ticket_service.create_ticket()</code> → status = <code>open</code></li>
+    <li>Ticket appears in "My Service Requests" table</li>
+  </ol>
+
+  <h4>Scenario 2 — Admin Assigns a Technician and Searches</h4>
+  <ol>
+    <li>Admin logs in with <code>admin@wsit.com / admin123</code> → navigated to <code>/admin</code></li>
+    <li>Types "CCTV" in search box, selects Status = <code>open</code> → <code>GET /tickets?search=CCTV&amp;status=open</code></li>
+    <li><code>_apply_filters()</code> applies <code>ilike</code> and <code>WHERE</code> → filtered list returned</li>
+    <li>Admin selects "Ahmed Al-Rashid" from technician dropdown → clicks Assign</li>
+    <li><code>PUT /tickets/1/assign</code> → <code>assigned_technician = "Ahmed Al-Rashid"</code>, <code>status = in_progress</code></li>
+  </ol>
+
+  <h4>Scenario 3 — Technician Resolves an Assigned Ticket</h4>
+  <ol>
+    <li>Technician registers at <code>/login</code> with role "Technician" → account created</li>
+    <li>Technician logs in → navigated to <code>/technician</code> dashboard</li>
+    <li><code>GET /tickets/assigned</code> → shows only tickets where <code>assigned_technician == full_name</code></li>
+    <li>Technician clicks "Mark Resolved" on ticket #1</li>
+    <li><code>PUT /tickets/1/resolve</code> → backend verifies ownership → <code>status = resolved</code></li>
+    <li>Technician clicks "Mark Closed" → <code>status = closed</code></li>
+  </ol>
+
+  <h4>Scenario 4 — Customer Tracks Ticket Status</h4>
+  <ol>
+    <li>Customer logs in, applies filter Status = <code>resolved</code></li>
+    <li><code>GET /tickets/my?status=resolved</code> → filtered list of own resolved tickets</li>
+    <li>Customer sees ticket #1 with technician "Ahmed Al-Rashid" and status <code>resolved</code></li>
+    <li>Customer clicks "View" → <code>TicketDetails</code> shows all metadata and description</li>
+  </ol>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 4: IMPLEMENTATION SUMMARY
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h1 class="doc">4. Implementation Summary</h1>
+
+  <h2>4.1 Phase 1 Features</h2>
+  <table>
+    <tr><th>Feature</th><th>Status</th></tr>
+    <tr><td>Customer registration and login</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Role-based route protection (Customer / Admin)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Ticket submission (service type, priority, location)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Customer "My Tickets" view</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Admin "All Tickets" management view</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Technician assignment to tickets</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Ticket status management (open → in_progress → resolved → closed)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Ticket detail view (read-only)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Admin seed account (admin@wsit.com / admin123)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>SAD Version 1 (Use Case, Logical, Process Views)</td><td><span class="badge done">✓ Complete</span></td></tr>
+  </table>
+
+  <h2>4.2 Phase 2 Features</h2>
+  <table>
+    <tr><th>Feature</th><th>Status</th></tr>
+    <tr><td>JWT-based authentication (replaces mock base64 token)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>bcrypt password hashing (replaces SHA-256)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Technician role — self-registration via register page</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Technician Dashboard (/technician) with assigned ticket view</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>GET /tickets/assigned — technician's personal task list</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>PUT /tickets/{id}/resolve — technician status update</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>GET /technicians — admin dropdown of registered technicians</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Ticket search by keyword (title, description, location)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Ticket filter by status and priority</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>.env configuration (backend + frontend)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Loading states in all dashboard views</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Form validation with error messages</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Docker support (Dockerfile × 2 + docker-compose.yml)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Production deployment diagram (Nginx + Docker)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>Development View (module structure + UML components)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>SAD Version 2 (full 4+1 Model — all 5 views)</td><td><span class="badge done">✓ Complete</span></td></tr>
+    <tr><td>README.md with complete setup instructions</td><td><span class="badge done">✓ Complete</span></td></tr>
+  </table>
+
+  <h2>4.3 REST API Endpoint Summary</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Role</th><th>Description</th></tr>
+    <tr><td>POST</td><td>/customers/register</td><td>No</td><td>—</td><td>Register Customer or Technician account</td></tr>
+    <tr><td>POST</td><td>/auth/login</td><td>No</td><td>—</td><td>Login — returns JWT + user info</td></tr>
+    <tr><td>GET</td><td>/technicians</td><td>No</td><td>—</td><td>List all registered technicians (admin dropdown)</td></tr>
+    <tr><td>POST</td><td>/tickets</td><td>Yes</td><td>Customer</td><td>Submit a new service request ticket</td></tr>
+    <tr><td>GET</td><td>/tickets/my</td><td>Yes</td><td>Customer</td><td>List own tickets (?status, ?priority, ?search)</td></tr>
+    <tr><td>GET</td><td>/tickets/assigned</td><td>Yes</td><td>Technician</td><td>List tickets assigned to me (?status, ?priority)</td></tr>
+    <tr><td>GET</td><td>/tickets</td><td>Yes</td><td>Admin</td><td>List all tickets (?status, ?priority, ?search)</td></tr>
+    <tr><td>GET</td><td>/tickets/{id}</td><td>Yes</td><td>Owner / Admin</td><td>Retrieve a single ticket by ID</td></tr>
+    <tr><td>PUT</td><td>/tickets/{id}/status</td><td>Yes</td><td>Admin</td><td>Update ticket status (any)</td></tr>
+    <tr><td>PUT</td><td>/tickets/{id}/assign</td><td>Yes</td><td>Admin</td><td>Assign technician (sets status → in_progress)</td></tr>
+    <tr><td>PUT</td><td>/tickets/{id}/resolve</td><td>Yes</td><td>Technician</td><td>Update status of own assigned ticket</td></tr>
+    <tr><td>GET</td><td>/</td><td>No</td><td>—</td><td>Health check</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 5: TEAM CONTRIBUTIONS
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h1 class="doc">5. Team Member Contributions</h1>
+
+  <div class="contrib">
+    <h3>Zekeriya</h3>
+    <div class="role-tag">Lead Software Architect &amp; Backend Developer</div>
+    <ul>
+      <li>Defined the overall 4+1 Architectural Model and system design strategy</li>
+      <li>Designed the Layered REST API Architecture (4-layer separation of concerns)</li>
+      <li>Set up the FastAPI project structure: routes, services, models, schemas</li>
+      <li>Implemented SQLAlchemy ORM models: <code>User</code> (3 roles), <code>Ticket</code> + all Enums</li>
+      <li>Designed the relational database schema (SQLite with SQLAlchemy 2.0)</li>
+      <li>Implemented all REST API endpoints (9 Phase 1 + 3 Phase 2 endpoints)</li>
+      <li><strong>Phase 2:</strong> Migrated to JWT authentication (python-jose HS256, 24 h TTL)</li>
+      <li><strong>Phase 2:</strong> Replaced SHA-256 with bcrypt password hashing (passlib)</li>
+      <li><strong>Phase 2:</strong> Added Technician role + <code>/tickets/assigned</code> + <code>/tickets/{id}/resolve</code></li>
+      <li><strong>Phase 2:</strong> Implemented environment configuration (<code>app/core/config.py</code>)</li>
+      <li><strong>Phase 2:</strong> Created Backend Dockerfile (python:3.11-slim)</li>
+      <li>Wrote the technical architecture sections of SAD V1 and V2</li>
+    </ul>
+  </div>
+
+  <div class="contrib">
+    <h3>Hussein</h3>
+    <div class="role-tag">Frontend Developer</div>
+    <ul>
+      <li>Designed and implemented the full React SPA architecture with Vite 5</li>
+      <li>Built all 5 application pages: Login, Customer, Admin, Technician, TicketDetails</li>
+      <li>Implemented role-based route protection using <code>RequireAuth</code> component in <code>App.jsx</code></li>
+      <li>LoginPage: Login/Register tabs with Customer/Technician account type selector</li>
+      <li>CustomerDashboard: Ticket submission form, status/priority filter bar, ticket table</li>
+      <li>AdminDashboard: Search input, filter dropdowns, technician assignment dropdown (Phase 2)</li>
+      <li><strong>Phase 2:</strong> Built <code>TechnicianDashboard.jsx</code> — complete assigned-ticket management page</li>
+      <li><strong>Phase 2:</strong> Added loading states to all data-fetching components</li>
+      <li>Configured Axios HTTP client (<code>api/client.js</code>) with JWT Bearer interceptor</li>
+      <li><strong>Phase 2:</strong> Migrated API base URL to <code>VITE_API_URL</code> environment variable</li>
+      <li>Created Frontend Dockerfile (multi-stage: node:18-alpine → nginx:alpine)</li>
+    </ul>
+  </div>
+
+  <div class="contrib">
+    <h3>Hamza</h3>
+    <div class="role-tag">Systems Analyst</div>
+    <ul>
+      <li>Led system requirements gathering, analysis, and validation</li>
+      <li>Identified and documented all system actors: Customer, Technician, Administrator</li>
+      <li>Defined 11 use cases (UC-01 to UC-11) with descriptions and actor mappings</li>
+      <li>Created the Use Case Diagram (PlantUML) for Phase 1 (UC-01 to UC-08)</li>
+      <li>Analysed system workflows, business rules, and ticket lifecycle transitions</li>
+      <li>Created the Activity Diagram for Admin Ticket Management workflow</li>
+      <li><strong>Phase 2:</strong> Extended use cases for Technician role (UC-10, UC-11)</li>
+      <li><strong>Phase 2:</strong> Updated Use Case Diagram to include Technician actor</li>
+      <li>Contributed to SAD V1 Sections 2 (System Selection) and 3.1 (Use Case View)</li>
+      <li>Contributed to SAD V2 Sections 3.1 updates and 3.6 Scenarios (+1 View)</li>
+    </ul>
+  </div>
+
+  <div class="contrib">
+    <h3>Elsa</h3>
+    <div class="role-tag">API &amp; Integration Specialist</div>
+    <ul>
+      <li>Designed the complete REST API endpoint specification (methods, schemas, status codes)</li>
+      <li>Defined Pydantic request/response schemas for all endpoints</li>
+      <li>Implemented and validated frontend-backend integration across all pages</li>
+      <li>Tested all API integrations using FastAPI Swagger UI (<code>localhost:8000/docs</code>)</li>
+      <li><strong>Phase 2:</strong> Designed search/filter query parameter API (<code>?status</code>, <code>?priority</code>, <code>?search</code>)</li>
+      <li><strong>Phase 2:</strong> Implemented <code>GET /technicians</code> endpoint (admin-accessible technician list)</li>
+      <li><strong>Phase 2:</strong> Implemented <code>GET /tickets/assigned</code> and <code>PUT /tickets/{id}/resolve</code></li>
+      <li><strong>Phase 2:</strong> Set up backend and frontend <code>.env</code> configuration files</li>
+      <li>Wrote the API Endpoint Summary in README.md</li>
+      <li>Contributed to SAD Sections 3.2 (Logical View) and 3.3 (Process View)</li>
+    </ul>
+  </div>
+
+  <div class="contrib">
+    <h3>Leen</h3>
+    <div class="role-tag">QA Engineer &amp; Technical Writer</div>
+    <ul>
+      <li>Wrote and maintained the Software Architecture Document (SAD V1 and V2)</li>
+      <li>Structured the 4+1 architectural document per Kruchten (1995) methodology</li>
+      <li>Phase 1 testing: registration, login, ticket submission, admin assign/status flows</li>
+      <li><strong>Phase 2:</strong> Tested JWT authentication and bcrypt password hashing</li>
+      <li><strong>Phase 2:</strong> Tested search &amp; filter functionality on all ticket endpoints</li>
+      <li><strong>Phase 2:</strong> Tested full Technician flow (register → login → view tasks → resolve → close)</li>
+      <li>Wrote the README.md with setup instructions for both development and Docker</li>
+      <li>Documented all API endpoints, environment variables, and filter parameters</li>
+      <li>Contributed to SAD Sections 3.4 (Development View) and 3.5 (Deployment View)</li>
+      <li><strong>Phase 2:</strong> Authored Production Deployment section with Nginx configuration</li>
+      <li>Validated Docker Compose deployment (<code>docker-compose up --build</code>)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 6: CONCLUSION
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h1 class="doc">6. Conclusion</h1>
+
+  <p>Version 2.0 of the Smart IT Service Request and Support Ticket System delivers a production-hardened extension of the Phase 1 MVP. The core <strong>Layered REST API Architecture</strong> is preserved unchanged — all Phase 2 improvements are additive rather than structural, demonstrating the extensibility of the original design.</p>
+
+  <p>The key security upgrades — <strong>JWT-based authentication</strong> and <strong>bcrypt password hashing</strong> — replace the prototype mechanisms from Phase 1 with industry-standard approaches suitable for deployment. Environment-based configuration via <code>.env</code> files decouples secrets from source code, while Docker support enables reproducible builds and simplified deployment.</p>
+
+  <p>The addition of the <strong>Technician role</strong> in Phase 2 demonstrates how the layered architecture cleanly accommodates new actors: a new dashboard page, three new endpoints, and a registration flow extension were added without any changes to the existing customer or admin code paths. The system now supports a complete real-world ticket lifecycle: Customer submits → Admin assigns Technician → Technician resolves → Admin closes.</p>
+
+  <p>The search and filter capability shows how new query behaviour is encapsulated in <code>ticket_service._apply_filters()</code> and exposed through optional query parameters in the route layer, with no changes required to the data model or frontend component structure.</p>
+
+  <p>The Production Deployment View introduced in Version 2.0 extends the Physical View to cover the containerised production topology, showing how Nginx, FastAPI/Uvicorn, and the React SPA interact behind a reverse proxy. Together, all six 4+1 views provide a complete architectural picture suitable for both academic evaluation and practical team reference.</p>
+
+  <div class="info-box">
+    <strong>Phase 2 Deliverables Summary:</strong> SAD V2 (all 5 views complete) · JWT + bcrypt security · Technician role (3 new endpoints + dashboard) · Search/filter API + UI · .env configuration · Docker (Dockerfile × 2 + docker-compose) · Production deployment diagram with Nginx · README.md with full setup instructions.
+  </div>
+</div>
+
+</body>
+</html>
